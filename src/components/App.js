@@ -5,10 +5,11 @@ import FriendForm from './FriendForm'
 // 🔥 STEP 2- FLESH OUT FriendForm.js
 // 🔥 STEP 3- FLESH THE SCHEMA IN ITS OWN FILE
 // 🔥 STEP 4- IMPORT THE SCHEMA, AXIOS AND YUP
+import axios from 'axios'
+import * as Yup from 'yup'
+import schema from '../validation/formSchema'
 
 
-//////////////// INITIAL STATES ////////////////
-//////////////// INITIAL STATES ////////////////
 //////////////// INITIAL STATES ////////////////
 const initialFormValues = {
   ///// TEXT INPUTS /////
@@ -35,19 +36,24 @@ const initialDisabled = true
 
 export default function App() {
   //////////////// STATES ////////////////
-  //////////////// STATES ////////////////
-  //////////////// STATES ////////////////
   const [friends, setFriends] = useState(initialFriends)          // array of friend objects
   const [formValues, setFormValues] = useState(initialFormValues) // object
   const [formErrors, setFormErrors] = useState(initialFormErrors) // object
   const [disabled, setDisabled] = useState(initialDisabled)       // boolean
 
   //////////////// HELPERS ////////////////
-  //////////////// HELPERS ////////////////
-  //////////////// HELPERS ////////////////
   const getFriends = () => {
     // 🔥 STEP 5- IMPLEMENT! ON SUCCESS PUT FRIENDS IN STATE
     //    helper to [GET] all friends from `http://buddies.com/api/friends`
+
+    axios
+      .get('http://buddies.com/api/friends')
+      .then(res => {
+        setFriends(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   const postNewFriend = newFriend => {
@@ -56,8 +62,6 @@ export default function App() {
     //    and regardless of success or failure, the form should reset
   }
 
-  //////////////// EVENT HANDLERS ////////////////
-  //////////////// EVENT HANDLERS ////////////////
   //////////////// EVENT HANDLERS ////////////////
   const inputChange = (name, value) => {
     // 🔥 STEP 10- RUN VALIDATION WITH YUP
@@ -70,16 +74,15 @@ export default function App() {
   const formSubmit = () => {
     const newFriend = {
       username: formValues.username.trim(),
-      email: formValues.email.trim(),
-      role: formValues.role.trim(),
-      civil: formValues.civil.trim(),
+      email: formValues.email.trim().toLowerCase(),
+      role: formValues.role.trim().toLowerCase(),
+      civil: formValues.civil.trim().toLowerCase(),
       // 🔥 STEP 7- WHAT ABOUT HOBBIES?
     }
     // 🔥 STEP 8- POST NEW FRIEND USING HELPER
+    postNewFriend(newFriend)
   }
 
-  //////////////// SIDE EFFECTS ////////////////
-  //////////////// SIDE EFFECTS ////////////////
   //////////////// SIDE EFFECTS ////////////////
   useEffect(() => {
     getFriends()
