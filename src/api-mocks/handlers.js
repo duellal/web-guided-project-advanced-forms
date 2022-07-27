@@ -52,6 +52,6 @@ function createNewFriend(req, res, ctx) {
 }
 
 export const handlers = [
-  rest.get('http://buddies.com/api/friends', getAllFriends),
+  rest.get('http://buddies/api/friends', getAllFriends),
   rest.post('http://buddies.com/api/friends', createNewFriend),
 ]
